@@ -35,24 +35,31 @@ public class GridEditor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void AddRoad(Vector3 position)
     {
-        if (Roads[(int)position.x, (int)position.y] == null)
+        if (IsInGrid((int)position.x,(int)position.z))
         {
-            Roads[(int)position.x, (int)position.y] = Instantiate<GameObject>(Forward[0], position,Quaternion.identity);
-            CheckNeighbors(position);
+            if (Roads[(int)position.x, (int)position.y] == null)
+            {
+                Roads[(int)position.x, (int)position.y] = Instantiate<GameObject>(Forward[0], position, Quaternion.identity);
+                CheckNeighbors(position);
+            }
+
         }
-        
+
     }
     public void DeleteRoad(Vector3 pos)
     {
-        if (Roads[(int)pos.x, (int)pos.y] != null)
+        if (IsInGrid((int)pos.x, (int)pos.z))
         {
-            Destroy(Roads[(int)pos.x, (int)pos.y]);
-            Roads[(int)pos.x, (int)pos.y] = null;
+            if (Roads[(int)pos.x, (int)pos.y] != null)
+            {
+                Destroy(Roads[(int)pos.x, (int)pos.y]);
+                Roads[(int)pos.x, (int)pos.y] = null;
+            }
         }
     }
 
@@ -60,7 +67,7 @@ public class GridEditor : MonoBehaviour
 
     public void CheckNeighbors(Vector3 pos)
     {
-        foreach(var dir in Directions)
+        foreach (var dir in Directions)
         {
 
         }

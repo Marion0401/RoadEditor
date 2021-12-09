@@ -9,19 +9,19 @@ public class FollowMouse : MonoBehaviour
     public GameObject roadPrefab;
     bool creating;
     Vector3 currentPosition;
-    GridEditor grid;
+    public GridEditor grid;
 
     
 
     
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             grid.DeleteRoad(GetPositionGrid());
         }
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(0))
         {
             grid.AddRoad(GetPositionGrid());
         }
