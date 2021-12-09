@@ -12,6 +12,7 @@ public class GridEditor : MonoBehaviour
     public List<GameObject> Turn = new List<GameObject>();
     public List<GameObject> T_Road = new List<GameObject>();
     public GameObject End_Road;
+    public GameObject Alone_Road;
     public List<Vector3> Directions = new List<Vector3>();
 
     // Start is called before the first frame update
@@ -22,15 +23,8 @@ public class GridEditor : MonoBehaviour
         Directions.Add(Vector3.right);
         Directions.Add(Vector3.back);
         Directions.Add(Vector3.left);
-
-
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void AddRoad(Vector3 position)
     {
@@ -130,7 +124,6 @@ public class GridEditor : MonoBehaviour
                 Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, -90, 0));
             else if (neighbors[3] && neighbors[0] && neighbors[1])
                 Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 0, 0));
-            ///Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
         }
         if (count == 2)
         {
@@ -161,7 +154,7 @@ public class GridEditor : MonoBehaviour
         {
             DeleteRoad(pos);
 
-            Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(End_Road, new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+            Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Alone_Road, new Vector3(pos.x, 0, pos.z), Quaternion.identity);
         }
         if (count == 1)
         {
