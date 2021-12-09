@@ -23,13 +23,13 @@ public class GridEditor : MonoBehaviour
         Directions.Add(Vector3.back);
         Directions.Add(Vector3.left);
 
-        //for (int i = 0; i < height; i++)
-        //{
-        //    for (int j = 0; j < width; j++)
-        //    {
-        //        Roads[i, j] = Instantiate<GameObject>(Forward[0], new Vector3(i, 0, j), Quaternion.identity);
-        //    }
-        //}
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                Roads[i, j] = Instantiate<GameObject>(Forward[0], new Vector3(i, 0, j), Quaternion.identity);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -40,11 +40,12 @@ public class GridEditor : MonoBehaviour
 
     public void AddRoad(Vector3 position)
     {
+        Debug.Log(position);
         if (IsInGrid((int)position.x,(int)position.z))
         {
-            if (Roads[(int)position.x, (int)position.y] == null)
+            if (Roads[(int)position.x, (int)position.z] == null)
             {
-                Roads[(int)position.x, (int)position.y] = Instantiate<GameObject>(Forward[0], position, Quaternion.identity);
+                Roads[(int)position.x, (int)position.z] = Instantiate<GameObject>(Forward[0], position, Quaternion.identity);
                 CheckNeighbors(position);
             }
 
@@ -55,10 +56,10 @@ public class GridEditor : MonoBehaviour
     {
         if (IsInGrid((int)pos.x, (int)pos.z))
         {
-            if (Roads[(int)pos.x, (int)pos.y] != null)
+            if (Roads[(int)pos.x, (int)pos.z] != null)
             {
-                Destroy(Roads[(int)pos.x, (int)pos.y]);
-                Roads[(int)pos.x, (int)pos.y] = null;
+                Destroy(Roads[(int)pos.x, (int)pos.z]);
+                Roads[(int)pos.x, (int)pos.z] = null;
             }
         }
     }
