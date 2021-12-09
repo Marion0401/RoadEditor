@@ -23,13 +23,13 @@ public class GridEditor : MonoBehaviour
         Directions.Add(Vector3.back);
         Directions.Add(Vector3.left);
 
-        for (int i = 0; i < height; i++)
-        {
-            for (int j = 0; j < width; j++)
-            {
-                Roads[i, j] = Instantiate<GameObject>(Forward[0], new Vector3(i, 0, j), Quaternion.identity);
-            }
-        }
+        //for (int i = 0; i < height; i++)
+        //{
+        //    for (int j = 0; j < width; j++)
+        //    {
+        //        Roads[i, j] = Instantiate<GameObject>(Forward[0], new Vector3(i, 0, j), Quaternion.identity);
+        //    }
+        //}
     }
 
     // Update is called once per frame
@@ -40,12 +40,11 @@ public class GridEditor : MonoBehaviour
 
     public void AddRoad(Vector3 position)
     {
-        Debug.Log(position);
         if (IsInGrid((int)position.x,(int)position.z))
         {
             if (Roads[(int)position.x, (int)position.z] == null)
             {
-                Roads[(int)position.x, (int)position.z] = Instantiate<GameObject>(Forward[0], position, Quaternion.identity);
+                Roads[(int)position.x, (int)position.z] = Instantiate<GameObject>(Forward[0], new Vector3(position.x,0,position.z), Quaternion.identity);
                 CheckNeighbors(position);
             }
 
@@ -68,15 +67,27 @@ public class GridEditor : MonoBehaviour
 
     public void CheckNeighbors(Vector3 pos)
     {
+        bool[] neighbors = new bool[4];
+        int NeighborCount = 0;
+        int compteur = 0;
         foreach (var dir in Directions)
         {
+            Vector3 future = pos + dir;
+            if (IsInGrid(future))
+            {
 
+            }
+            compteur++;
         }
     }
 
     public bool IsInGrid(int x, int y)
     {
         return (x >= 0 && x < height && y >= 0 && y < width);
+    }
+    public bool IsInGrid(Vector3 target)
+    {
+        return (target.x >= 0 && target.x < height && target.z >= 0 && target.z < width);
     }
 
 }
