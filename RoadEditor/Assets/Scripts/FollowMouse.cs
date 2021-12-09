@@ -7,12 +7,14 @@ public class FollowMouse : MonoBehaviour
 
 
     public GridEditor grid;
+    public GameObject pointer;
 
     
 
     
     private void Update()
     {
+        pointer.transform.position = getWorldPoint();
         if (Input.GetMouseButton(1))
         {
             grid.DeleteRoad(GetPositionGrid());

@@ -15,23 +15,23 @@ public class MoveCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.Z))
         {
 
             transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.1f);
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             transform.position = new Vector3(transform.position.x+0.1f, transform.position.y, transform.position.z);
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.Q))
         {
             transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.S))
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z-0.1f);
         }
