@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class FollowMouse : MonoBehaviour
 {
-    public GameObject polePrefab;
-    GameObject lastPole;
-    public GameObject roadPrefab;
-    bool creating;
-    Vector3 currentPosition;
+
+
     public GridEditor grid;
 
     
