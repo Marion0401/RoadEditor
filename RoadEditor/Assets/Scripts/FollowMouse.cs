@@ -16,7 +16,7 @@ public class FollowMouse : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButton(1))
         {
             grid.DeleteRoad(GetPositionGrid());
         }
