@@ -23,13 +23,7 @@ public class GridEditor : MonoBehaviour
         Directions.Add(Vector3.back);
         Directions.Add(Vector3.left);
 
-        //for (int i = 0; i < height; i++)
-        //{
-        //    for (int j = 0; j < width; j++)
-        //    {
-        //        Roads[i, j] = Instantiate<GameObject>(Forward[0], new Vector3(i, 0, j), Quaternion.identity);
-        //    }
-        //}
+
     }
 
     // Update is called once per frame
@@ -60,6 +54,23 @@ public class GridEditor : MonoBehaviour
             {
                 Destroy(Roads[(int)pos.x, (int)pos.z]);
                 Roads[(int)pos.x, (int)pos.z] = null;
+            }
+        }
+    }
+    /// <summary>
+    /// pas le temps de finir mais l'objectif c'est d'avancer d'un indice dans la liste de prefab pour recréer la route mais dans une variante
+    /// </summary>
+    /// <param name="pos"></param>
+    public void ChangeType(Vector3 pos)
+    {
+        if (IsInGrid((int)pos.x, (int)pos.z))
+        {
+            if (Roads[(int)pos.x, (int)pos.z] != null)
+            {
+                //Quaternion saveAngle = Roads[(int)pos.x, (int)pos.z].transform.rotation;
+                //Destroy(Roads[(int)pos.x, (int)pos.z]);
+                //Roads[(int)pos.x, (int)pos.z] = null;
+
             }
         }
     }
@@ -95,7 +106,12 @@ public class GridEditor : MonoBehaviour
         ChangeModel(pos, neighbors, neighborCount);
     }
 
-
+    /// <summary>
+    /// C'est pas très très beau à voir fermez les yeux
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="neighbors"></param>
+    /// <param name="count"></param>
     public void ChangeModel(Vector3 pos, bool[] neighbors, int count)
     {
         if (count == 4)
@@ -106,7 +122,15 @@ public class GridEditor : MonoBehaviour
         if (count == 3)
         {
             DeleteRoad(pos);
-            Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+            if (neighbors[0] && neighbors[1] && neighbors[2])
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 90, 0));
+            else if (neighbors[1] && neighbors[2] && neighbors[3])
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 180, 0));
+            else if (neighbors[2] && neighbors[3] && neighbors[0])
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, -90, 0));
+            else if (neighbors[3] && neighbors[0] && neighbors[1])
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 0, 0));
+            ///Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
         }
         if (count == 2)
         {
@@ -130,7 +154,7 @@ public class GridEditor : MonoBehaviour
                     Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 180, 0));
                 else if (neighbors[3] && neighbors[0])
                     Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, -90, 0));
-                //Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+
             }
         }
         if (count == 0)

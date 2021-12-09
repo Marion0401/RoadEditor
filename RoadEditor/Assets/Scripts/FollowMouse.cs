@@ -25,6 +25,10 @@ public class FollowMouse : MonoBehaviour
         {
             grid.AddRoad(GetPositionGrid());
         }
+        if (Input.GetMouseButtonDown(3))
+        {
+            grid.ChangeType(GetPositionGrid());
+        }
     }
 
 
@@ -53,9 +57,9 @@ public class FollowMouse : MonoBehaviour
     Vector3 floorPosition(Vector3 original)
     {
         Vector3 snapped;
-        snapped.x = Mathf.Floor(original.x);
-        snapped.y = Mathf.Floor(original.y);
-        snapped.z = Mathf.Floor(original.z);
+        snapped.x = Mathf.Floor(original.x +0.5f);
+        snapped.y = Mathf.Floor(original.y +0.5f);
+        snapped.z = Mathf.Floor(original.z +0.5f);
         return snapped;
     }
 }
