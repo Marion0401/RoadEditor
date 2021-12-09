@@ -8,71 +8,36 @@ public class FollowMouse : MonoBehaviour
     GameObject lastPole;
     public GameObject roadPrefab;
     bool creating;
+    Vector3 currentPosition;
+    GridEditor grid;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
 
-    // Update is called once per frame
-    void Update()
+    
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            StartConstruction();
+            grid.DeleteRoad(GetPositionGrid());
         }
-        else if (Input.GetMouseButtonUp(0))
+
+        if (Input.GetMouseButton(1))
         {
-            StopConstruction();
-
-        }
-        else
-        {
-            if (creating)
-            {
-                UpdateConstruction();
-            }
-
+            grid.AddRoad(GetPositionGrid());
         }
     }
 
-    private void StartConstruction()
+
+
+    private Vector3 GetPositionGrid()
     {
-        creating = true;
-        Vector3 startPosition = getWorldPoint();
-        startPosition = floorPosition(startPosition);
-        GameObject startPole = Instantiate(polePrefab, new Vector3(startPosition.x, 0, startPosition.z), Quaternion.identity);
-        startPole.transform.position = new Vector3(startPosition.x, startPosition.y, startPosition.z);
-        lastPole = startPole;
-
-
+        Vector3 position = getWorldPoint();
+        position = floorPosition(position);
+        return position;
     }
 
-    private void StopConstruction()
-    {
-        creating = false;
-    }
+    
 
-    private void UpdateConstruction()
-    {
-        Vector3 current = getWorldPoint();
-        current = floorPosition(current);
-        current = new Vector3(current.x, current.y + 0.3f, current.z);
-        if (!current.Equals(lastPole.transform.position))
-        {
-            CreateRoadSegment(current);
-        }
-    }
-
-    private void CreateRoadSegment(Vector3 current)
-    {
-        GameObject newPole = Instantiate(polePrefab, new Vector3(current.x, 0, current.z), Quaternion.identity);
-        Vector3 middle = Vector3.Lerp(newPole.transform.position, lastPole.transform.position, 0.5f);
-        GameObject newWall = Instantiate(roadPrefab, new Vector3(middle.x, 0, middle.z), Quaternion.identity);
-        newWall.transform.LookAt(lastPole.transform);
-        lastPole = newPole;
-    }
 
     Vector3 getWorldPoint()
     {
