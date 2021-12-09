@@ -44,8 +44,9 @@ public class GridEditor : MonoBehaviour
         {
             if (Roads[(int)position.x, (int)position.z] == null)
             {
-                Roads[(int)position.x, (int)position.z] = Instantiate<GameObject>(Forward[0], new Vector3(position.x, 0, position.z), Quaternion.identity);
-                CheckNeighbors(position, false, Vector3.zero);
+                GameObject test = Roads[(int)position.x, (int)position.z] = Instantiate<GameObject>(Forward[0], new Vector3(position.x, 0, position.z), Quaternion.identity);
+                //test.transform.SetParent(transform, false);
+                CheckNeighbors(position, false, Vector3.up);
             }
 
         }
@@ -70,7 +71,6 @@ public class GridEditor : MonoBehaviour
         bool[] neighbors = new bool[4];
         int compteur = 0;
         int neighborCount = 0;
-       // Debug.Log("check : " + pos + "  " + dontCheck +);
         foreach (var dir in Directions)
         {
             Vector3 future = pos + dir;
@@ -93,8 +93,9 @@ public class GridEditor : MonoBehaviour
             compteur++;
         }
         ChangeModel(pos, neighbors, neighborCount);
-        
     }
+
+
     public void ChangeModel(Vector3 pos, bool[] neighbors, int count)
     {
         if (count == 4)
@@ -110,14 +111,47 @@ public class GridEditor : MonoBehaviour
         if (count == 2)
         {
             DeleteRoad(pos);
-            Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+            if (neighbors[0] && neighbors[2])
+            {
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Forward[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+                Roads[(int)pos.x, (int)pos.z].transform.eulerAngles = new Vector3(0, 90, 0);
+            }
+            else if (neighbors[1] && neighbors[3])
+            {
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Forward[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+            }
+            else
+            {
+                if (neighbors[0] && neighbors[1])
+                    Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 0, 0));
+                else if (neighbors[1] && neighbors[2])
+                    Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 90, 0));
+                else if (neighbors[2] && neighbors[3])
+                    Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 180, 0));
+                else if (neighbors[3] && neighbors[0])
+                    Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, -90, 0));
+                //Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+            }
         }
-        if (count == 0 || count == 1)
+        if (count == 0)
         {
             DeleteRoad(pos);
+
             Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(End_Road, new Vector3(pos.x, 0, pos.z), Quaternion.identity);
         }
+        if (count == 1)
+        {
+            DeleteRoad(pos);
+            if (neighbors[3])
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(End_Road, new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+            else if (neighbors[2])
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(End_Road, new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, -90, 0));
+            else if (neighbors[1])
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(End_Road, new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 180, 0));
+            else
+                Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(End_Road, new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, 90, 0));
 
+        }
     }
 
     public bool IsInGrid(int x, int y)
