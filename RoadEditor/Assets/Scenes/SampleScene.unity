@@ -332,10 +332,13 @@ MonoBehaviour:
   width: 10
   Forward:
   - {fileID: 919132149155446097, guid: 5f4497eacb96e3e47be997287bb063f4, type: 3}
-  Intersect: []
-  Turn: []
-  T_Road: []
-  End_Road: {fileID: 0}
+  Intersect:
+  - {fileID: 919132149155446097, guid: d1dfa2013c3351843ae3c0724f7f135a, type: 3}
+  Turn:
+  - {fileID: 919132149155446097, guid: b7cc246732a087d49806e99ce19dd5b7, type: 3}
+  T_Road:
+  - {fileID: 919132149155446097, guid: 9a5783044ff01ea48896fc0031b25cdd, type: 3}
+  End_Road: {fileID: 919132149155446097, guid: 6e50b35d0191f8d42b41f87394da5e60, type: 3}
   Directions: []
 --- !u!4 &1962479195
 Transform:

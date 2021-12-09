@@ -40,12 +40,12 @@ public class GridEditor : MonoBehaviour
 
     public void AddRoad(Vector3 position)
     {
-        if (IsInGrid((int)position.x,(int)position.z))
+        if (IsInGrid((int)position.x, (int)position.z))
         {
             if (Roads[(int)position.x, (int)position.z] == null)
             {
-                Roads[(int)position.x, (int)position.z] = Instantiate<GameObject>(Forward[0], new Vector3(position.x,0,position.z), Quaternion.identity);
-                CheckNeighbors(position);
+                Roads[(int)position.x, (int)position.z] = Instantiate<GameObject>(Forward[0], new Vector3(position.x, 0, position.z), Quaternion.identity);
+                CheckNeighbors(position, false, Vector3.zero);
             }
 
         }
@@ -64,21 +64,60 @@ public class GridEditor : MonoBehaviour
     }
 
 
-
-    public void CheckNeighbors(Vector3 pos)
+    public void CheckNeighbors(Vector3 pos, bool dontCheck, Vector3 origin)
     {
+
         bool[] neighbors = new bool[4];
-        int NeighborCount = 0;
         int compteur = 0;
+        int neighborCount = 0;
+       // Debug.Log("check : " + pos + "  " + dontCheck +);
         foreach (var dir in Directions)
         {
             Vector3 future = pos + dir;
+
             if (IsInGrid(future))
             {
+                if (Roads[(int)future.x, (int)future.z] != null)
+                {
+
+                    neighborCount++;
+                    neighbors[compteur] = true;
+                    if (!dontCheck && future != origin)
+                    {
+                        CheckNeighbors(future, true, pos);
+                    }
+
+                }
 
             }
             compteur++;
         }
+        ChangeModel(pos, neighbors, neighborCount);
+        
+    }
+    public void ChangeModel(Vector3 pos, bool[] neighbors, int count)
+    {
+        if (count == 4)
+        {
+            DeleteRoad(pos);
+            Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Intersect[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+        }
+        if (count == 3)
+        {
+            DeleteRoad(pos);
+            Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(T_Road[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+        }
+        if (count == 2)
+        {
+            DeleteRoad(pos);
+            Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(Turn[0], new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+        }
+        if (count == 0 || count == 1)
+        {
+            DeleteRoad(pos);
+            Roads[(int)pos.x, (int)pos.z] = Instantiate<GameObject>(End_Road, new Vector3(pos.x, 0, pos.z), Quaternion.identity);
+        }
+
     }
 
     public bool IsInGrid(int x, int y)
